@@ -1,13 +1,14 @@
-import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
+import { dew } from "https://jspm.dev/npm:cheerio";
+import { cheerio } from "https://deno.land/x/cheerio@1.0.5/mod.ts";
 
 const url = "https://example.com";
 
 try {
   const res = await fetch(url);
   const html: string = await res.text();
-  const document = new DOMParser().parseFromString(html, "text/html");
+  const $ = cheerio.load(html);
 
-  const pageHeader: any = document.querySelector("h1").textContent;
+  const pageHeader = $("h1").text();
 
   console.log(pageHeader);
 } catch (error) {
