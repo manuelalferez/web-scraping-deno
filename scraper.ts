@@ -1,16 +1,20 @@
-import { dew } from "https://jspm.dev/npm:cheerio";
-import { cheerio } from "https://deno.land/x/cheerio@1.0.5/mod.ts";
+import puppeteer from "https://deno.land/x/puppeteer@14.1.1/mod.ts";
+import { cheerio } from "https://deno.land/x/cheerio@1.0.6/mod.ts";
 
-const url = "https://example.com";
+const url = "https://kami4ka.github.io/dynamic-website-example/";
 
 try {
-  const res = await fetch(url);
-  const html: string = await res.text();
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto(url);
+
+  const html = await page.content();
+
   const $ = cheerio.load(html);
 
-  const pageHeader = $("h1").text();
+  const pageText = $("div").text();
 
-  console.log(pageHeader);
+  console.log(pageText);
 } catch (error) {
   console.log(error);
 }
