@@ -1,20 +1,17 @@
 import puppeteer from "https://deno.land/x/puppeteer@14.1.1/mod.ts";
-import { cheerio } from "https://deno.land/x/cheerio@1.0.6/mod.ts";
 
-const url = "https://kami4ka.github.io/dynamic-website-example/";
+const URL = "https://www.scrapethissite.com/pages/forms";
 
 try {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    headless: false,
+  });
   const page = await browser.newPage();
-  await page.goto(url);
-
-  const html = await page.content();
-
-  const $ = cheerio.load(html);
-
-  const pageText = $("div").text();
-
-  console.log(pageText);
+  await page.goto(URL);
+  await page.focus("#q");
+  await page.keyboard.type("Boston Bruins");
+  await page.waitForSelector("#q");
+  await page.keyboard.press("Enter");
 } catch (error) {
   console.log(error);
 }
